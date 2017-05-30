@@ -1,0 +1,57 @@
+var app = angular.module('myApp',[]);
+
+//app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
+//    // For any unmatched url, send to /business
+
+//    $locationProvider.html5Mode(true);
+//    $urlRouterProvider.otherwise('/home');
+//    $stateProvider
+//            .state('home', {//State demonstrating Nested views
+//                url: "/home",
+//                templateUrl: "../templates/home.html",
+//                controller:'homeCtrl'
+//            })
+//            .state('details', {//nested state [products is the nested state of business state]
+//                url: "/details/:id",
+//                templateUrl: "../templates/details.html",
+//                controller: 'detailsCtrl'
+//            })
+       
+
+            
+//}]);
+
+app.controller('myCtrl', function ($scope, $timeout,$http) {
+    
+    $scope.userData = [];
+    $scope.formData = [];
+    $scope.loadData = function () {
+        $http({
+            method: 'GET',
+            url: 'http://localhost:3000/api'
+        }).then(function successCallback(response) {
+            
+            $scope.userData = response.data;
+
+        }, function errorCallback(response) {
+           
+        });
+
+    }
+    $scope.submitData = function () {
+        var obj = { "name": $scope.formData.name, "age": $scope.formData.age, "city": $scope.formData.city };
+        $http({
+            method: 'POST',
+            url: 'http://localhost:3000/api',
+            data: JSON.stringify(obj)
+        }).then(function successCallback(response) {
+
+            $scope.userData = response.data;
+
+        }, function errorCallback(response) {
+
+        });
+    }
+    $scope.loadData();
+})
+
